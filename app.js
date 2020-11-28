@@ -6,6 +6,10 @@ var MYSQLStore = require('express-mysql-session')(session);
 var fs = require("fs");
 const { Store } = require('express-session');
 
+var indexRouter = require('./routes/index');
+var authRouter = require('./routes/users');
+
+
 require('dotenv').config();
 
 var options = {
@@ -39,5 +43,5 @@ app.use(session({
  store:sessionStore
 }));
 
-
-var router = require('./routes/index')(app, fs);
+app.use('/'.indexRouter);
+app.use('/auth', authRouter);

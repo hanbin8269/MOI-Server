@@ -3,19 +3,24 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
-    "cookie-parser": "~1.4.4",
+    "cookie-parser": "^1.4.5",
+    "crypto": "^1.0.1",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
-    "ejs": "^2.6.2",
+    "ejs": "^2.7.4",
     "express": "^4.16.4",
+    "express-mysql-session": "^2.1.4",
     "express-session": "^1.17.1",
     "fs": "0.0.1-security",
     "http-errors": "~1.6.3",
-    "morgan": "~1.9.1",
+    "morgan": "^1.9.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
     "node-sass-middleware": "0.11.0",
     "nodemon": "^2.0.6"
   }

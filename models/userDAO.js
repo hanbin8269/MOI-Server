@@ -9,3 +9,16 @@ exports.selectAllUser = function(cb){
         }
     });
 }
+
+exports.selectUser = function(email, hashedPassword, cb){
+    var sql = 'SELECT * FROM user where email=?';
+    var values = [email, hashedPassword];
+
+    connection.query(sql,values, (error, results, fields)=>{
+        if(error){
+            console.log(error);
+        }else{
+            cb(results);
+        }
+    })
+}

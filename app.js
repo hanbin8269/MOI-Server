@@ -2,9 +2,21 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var fs = require("fs")
+var MYSQLStore = require('express-mysql-session')(session);
+var fs = require("fs");
+const { Store } = require('express-session');
 
 require('dotenv').config();
+
+var options = {
+  host:process.env.DB_HOST,
+  port:3306,
+  user:process.env.DB_USER,
+  password:process.env.DB_PASSWORD,
+  database:process.env.DATABASE
+}
+
+var sessionStore = new MYSQLStore(options);
 
 
 app.set('views', __dirname + '/views');
@@ -23,7 +35,8 @@ app.use(bodyParser.urlencoded());
 app.use(session({
  secret: process.env.SECRET_KEY,
  resave: false,
- saveUninitialized: true
+ saveUninitialized: true,
+ store:sessionStore
 }));
 
 

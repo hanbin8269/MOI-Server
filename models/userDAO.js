@@ -22,3 +22,15 @@ exports.selectUser = function(email, hashedPassword, cb){
         }
     })
 }
+
+exports.insertUser = function(userInfo, cb){
+    sql = 'INSERT INTO user (email, password) VALUES(?, ?)';
+    values = [userInfo.email, userInfo.password];
+    connection.query(sql, values, function(error, results, fields){
+        if(error){
+            console.log(error);
+        }else{
+            cb(results);
+        }
+    })
+}

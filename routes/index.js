@@ -1,9 +1,11 @@
-module.exports = function(app, fs)
-{
-     app.get('/',function(req,res){
-         res.render('index', {
-             title: "index page",
-             length: 5
-         })
-     });
-}
+var express = require('express');
+var router = express.Router();
+
+router.get('/', function(req, res) {
+    res.render('index', { 
+        title: 'My Favorite Drama List', 
+        length: 1 
+    });
+});
+
+module.exports = router;

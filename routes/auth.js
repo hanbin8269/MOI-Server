@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var model = require('../models/userDAO');
 var crypto = require('crypto');
 const { PrismaClient } = require("@prisma/client");
 
@@ -56,18 +55,16 @@ router.post('/sign-up', async (req, res) =>{
         })
     });
 
-    var userInfo = {
-        "email" : req.body.email,
-        "password" : hashedPassword
-    }
-
-    model.insertUser(userInfo, (results)=>{
-        console.log(results);
-    })
-    res.render('index', {
-        title : 'hello',
-        length: 1
+    await prisma.user.create({
+        data : {
+            email : req.body.email,
+            password : hashedPassword
+        },
     });
+
+    res.status(201)
+    .send({"message" : "sign up success"})
+    .end();
 })
 
 

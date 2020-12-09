@@ -16,7 +16,7 @@ router.post('/project',async(req, res) =>{
 
     // 시간 되면 링크 유효성 검사
 
-    result = await prisma.Project.create({
+    project_result = await prisma.Project.create({
         data : {
             title : req.body.title,
             content : req.body.content,

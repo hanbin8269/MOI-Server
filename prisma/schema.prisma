@@ -13,21 +13,21 @@ model sessions {
   data       String?
 }
 
-model User {
+model user {
   email    String  @id
   password String?
 }
 
-model Project {
+model project {
   project_id Int @id
   title String
   content String
   github_link String
-  users User[]
-  techs Tech[]
+  users user[]
+  techs tech[]
 }
 
-model Tech {
+model tech {
   tech_id Int @id
   name String
   count Int

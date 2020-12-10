@@ -1,30 +1,46 @@
 var express = require('express');
 var app = express();
-var bodyParser = require('body-parser');
+var path = require('path');
+var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var fs = require("fs")
+var logger = require('morgan');
+var MYSQLStore = require('express-mysql-session')(session);
+
+var indexRouter = require('./routes/index');
+var authRouter = require('./routes/auth');
+var projectRouter = require('./routes/project.ts');
 
 require('dotenv').config();
 
+var options = {
+  host     : process.env.DB_HOST,
+  port     : 3306,
+  user     : process.env.DB_USER,
+  password : process.env.DB_PASSWORD,
+  database : process.env.DATABASE
+}
 
-app.set('views', __dirname + '/views');
+var sessionStore = new MYSQLStore(options);
+
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.engine('html', require('ejs').renderFile);
 
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-var server = app.listen(3000, function(){
- console.log("Express server has started on port 3000")
-});
-
-app.use(express.static('public'));
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
 app.use(session({
- secret: process.env.SECRET_KEY,
- resave: false,
- saveUninitialized: true
+  HttpOnly:true,
+  secret: process.env.SESSION_SECRET,
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: true,
 }));
 
+app.use('/',indexRouter);
+app.use('/auth', authRouter);
+app.use('/project', projectRouter);
 
-var router = require('./routes/index')(app, fs);
+module.exports = app;

@@ -19,7 +19,7 @@ model User {
 }
 
 model Project {
-  projectId Int @id
+  project_id Int @id
   title String
   content String
   github_link String
@@ -28,7 +28,7 @@ model Project {
 }
 
 model Tech {
-  techId Int @id
+  tech_id Int @id
   name String
   count Int
 }

@@ -8,6 +8,7 @@ var MYSQLStore = require('express-mysql-session')(session);
 
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
+var projectRouter = require('./routes/project.ts');
 
 require('dotenv').config();
 
@@ -40,5 +41,6 @@ app.use(session({
 
 app.use('/',indexRouter);
 app.use('/auth', authRouter);
+app.use('/project', projectRouter);
 
 module.exports = app;

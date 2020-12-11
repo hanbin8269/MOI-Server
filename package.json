@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon ./bin/www"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,17 @@
   "bugs": {
     "url": "https://github.com/hanbin8269/MOI-Server/issues"
   },
-  "homepage": "https://github.com/hanbin8269/MOI-Server#readme"
+  "homepage": "https://github.com/hanbin8269/MOI-Server#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-mysql-session": "^2.1.5",
+    "express-session": "^1.17.1",
+    "express-validator": "^6.8.0",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
+    "nodemon": "^2.0.6"
+  }
 }

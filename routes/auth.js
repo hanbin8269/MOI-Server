@@ -1,17 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var model = require('../models/userDAO');
 var crypto = require('crypto');
-const { PrismaClient } = require("@prisma/client");
-
-const prisma = new PrismaClient()
 
 router.post('/login', async (req, res) => {
 
-    const resultUser = await prisma.user.findUnique({
-        where:{
-            email : req.body.email
-        }
+    const resultUser = await model.findUserByEmail(req.body, (results)=>{
+        return results;
     })
+    console.log(resultUser)
 
     if (resultUser) {
         res.status(400).send({'error' : "doesn' exist user"});

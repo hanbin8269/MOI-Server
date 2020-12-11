@@ -1,9 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
-const { PrismaClient } = require("@prisma/client");
-
-const prisma = new PrismaClient()
 
 router.post('/login', async (req, res) => {
 

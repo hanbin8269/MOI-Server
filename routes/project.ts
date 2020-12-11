@@ -1,9 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { PrismaClient } = require("@prisma/client");
 const { body, validationResult } = require('express-validator');
-
-const prisma = new PrismaClient()
 
 router.post('/', async(req, res) =>{
     // 인증된 사용자인지 검사

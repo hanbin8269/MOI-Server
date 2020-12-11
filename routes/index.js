@@ -4,7 +4,7 @@ var router = express.Router();
 router.get('/', function(req, res) {
     res.render('index', { 
         title: 'My Favorite Drama List', 
-        length: 1 
+        length: 1
     });
 });
 

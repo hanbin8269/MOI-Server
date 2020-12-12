@@ -1,13 +1,13 @@
 var connection = require('./db')
 
-exports.findUserByEmail = function(data, cb){
+exports.findUserByEmail = function(email, cb){
     sql = "SELECT * FROM user where email=?";
-    values = [data.email];
-    connection.query(sql,values, function (error, results, fields) {
+    values = [email];
+    var resultUser = connection.query(sql,values, (error, results)=> {
         if(error){
             cb(error)
         }else{
-            cb(results[0]);
+            cb(results)
         }
     });
 }

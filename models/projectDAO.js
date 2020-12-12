@@ -51,3 +51,16 @@ exports.deleteProjectByProjectID = function(project_id, cb){
         }
     })
 }
+
+exports.createProject = function(data, cb){
+    sql = "INSERT INTO project (title,content,github_link,owner_email) values( ? , ? , ? , ? );";
+    values = [data.title, data.content, data.github_link, data.owner_email]
+    connection.query(sql,values,(error, results)=>{
+        if(error){
+            console.log(error);
+        }
+        else{
+            cb(results)
+        }
+    })
+}

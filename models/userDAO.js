@@ -7,7 +7,7 @@ exports.findUserByEmail = function(email, cb){
         if(error){
             console.log(error);
         }else{
-            cb(results)
+            cb(results[0])
         }
     });
 }

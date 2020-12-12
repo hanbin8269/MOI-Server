@@ -74,7 +74,21 @@ router.post('/', async(req, res) =>{
             // 나중에 에러 예외처리 넣어주자
             resolve(results);
         })
-    }) 
+    })
+
+    await Promise.all(tech_list.map((tech)=>{
+        project_tech_data = {
+            "tech_id" : tech[0].tech_id,
+            "project_id" : project_result.insertId
+        }
+        return new Promise((resolve,reject)=>{
+            model.projectDAO.createTechProject(project_tech_data,(results)=>{
+                resolve(results)
+            })
+            
+        })
+    }))
+
 
     // const project_result = await prisma.Project.create({
     //     data : {
@@ -91,26 +105,58 @@ router.post('/', async(req, res) =>{
     .end();
 })
 
-router.get('/', async(req,res)=>{ // get project
+router.get('/', async(req,res)=>{ // list project
     var project_result = await new Promise((resolve, reject)=>{
         model.projectDAO.getProjectList((results)=>{
             resolve(results);
         })
     })
 
+    const tech_list = await Promise.all(
+        project_result.map((project) => {
+            return new Promise((resolve, reject)=>{
+                model.projectDAO.getTechByProjectID(project.project_id,(results)=>{
+                    if (!isEmpty(results)){
+                        project['techs'] = results.map((tech)=>{
+                            return tech.name;
+                        })
+                    }else{
+                        project['techs'] = []
+                    }
+                    
+                    resolve(project)
+                })
+            })
+        })
+    )
+
+    project_result['techs'] = tech_list
+    project_result['users'] = tech_list
+
     res.send({"project" : project_result})
     .status(200)
     .end();
 })
 
-router.get('/:project_id', async(req,res)=>{ // Projects list
+router.get('/:project_id', async(req,res)=>{ // get project
     var project_result = await new Promise((resolve, reject)=>{
         model.projectDAO.getProjectByProjectID(req.params.project_id, (results)=>{
             resolve(results);
         })
     })
 
-    res.send({"project" : project_result})
+    const tech_list = await new Promise((resolve, reject)=>{
+        model.projectDAO.getTechByProjectID(req.params.project_id,(results)=>{
+            var techs = results.map(tech=>{
+                return tech.name
+            })
+            resolve(techs)
+        })
+    })
+    
+    project_result[0]['techs'] = tech_list
+
+    res.send({"project" : project_result[0]})
     .status(200)
     .end();
 })

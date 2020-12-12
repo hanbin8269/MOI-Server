@@ -96,23 +96,24 @@ exports.getTechByProjectID = function(project_id, cb){
     sql = "SELECT * FROM project_tech where project_id=?";
     values = [project_id];
     connection.query(sql,values,(error, results)=>{
-        if(results[0]===undefined){
-            cb(error)
-        }
-        else if(error){
+        if(error){
             cb(error)
         }
         else{
-            console.log(results[0])
-            connection.query("Select * from tech where tech_id = ?",[results[0].tech_id],(error, results)=>{
-                if(error){
-                    cb(error)
-                }
-                else{
-                    
-                    cb(results)
-                }
-            })
+            cb(results)
+        }
+    })
+}
+
+exports.getTechByTechID = function(tech_id, cb){
+    sql = "SELECT * FROM tech where tech_id= ? ";
+    values = [tech_id];
+    connection.query(sql,values,(error, results)=>{
+        if(error){
+            cb(error)
+        }
+        else{
+            cb(results)
         }
     })
 }

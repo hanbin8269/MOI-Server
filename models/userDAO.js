@@ -5,7 +5,7 @@ exports.findUserByEmail = function(email, cb){
     values = [email];
     var resultUser = connection.query(sql,values, (error, results)=> {
         if(error){
-            cb(error)
+            console.log(error);
         }else{
             cb(results)
         }

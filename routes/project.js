@@ -91,4 +91,16 @@ router.post('/', async(req, res) =>{
     .end();
 })
 
+router.get('/', async(req,res)=>{ // get project
+    var project_result = await new Promise((resolve, reject)=>{
+        model.projectDAO.getProjectListByTitle(req.query.title, (results)=>{
+            resolve(results);
+        })
+    })
+
+    res.send({"project" : project_result})
+    .status(200)
+    .end();
+})
+
 module.exports = router

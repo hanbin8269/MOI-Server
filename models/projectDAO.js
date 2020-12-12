@@ -26,6 +26,18 @@ exports.getProjectListByTitle = function(title, cb){
     })
 }
 
+exports.getProjectList= function( cb){
+    sql = "SELECT * From project"
+    connection.query(sql,(error, results)=>{
+        if(error){
+            console.log(error);
+        }
+        else{
+            cb(results)
+        }
+    })
+}
+
 exports.getProjectByProjectID = function(project_id, cb){
     sql = "SELECT * From project where project_id = ?"
     values = [project_id]

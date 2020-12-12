@@ -115,4 +115,27 @@ router.get('/:project_id', async(req,res)=>{ // Projects list
     .end();
 })
 
+router.delete('/:project_id', async(req,res)=>{ // Projects delete
+    var is_project = await new Promise((resolve, reject)=>{
+        model.projectDAO.getProjectByProjectID(req.params.project_id, (results)=>{
+            resolve(results);
+        })
+    })
+    if(isEmpty(is_project)){
+        res.send({"message" : "project doesn't exists"})
+        .status(200)
+        .end();
+        return
+    }
+    var project_result = await new Promise((resolve, reject)=>{
+        model.projectDAO.deleteProjectByProjectID(req.params.project_id, (results)=>{
+            resolve(results);
+        })
+    })
+
+    res.send({"project" : "delete success"})
+    .status(200)
+    .end();
+})
+
 module.exports = router

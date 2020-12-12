@@ -38,3 +38,16 @@ exports.getProjectByProjectID = function(project_id, cb){
         }
     })
 }
+
+exports.deleteProjectByProjectID = function(project_id, cb){
+    sql = "Delete From project where project_id = ?"
+    values = [project_id]
+    connection.query(sql,values,(error, results)=>{
+        if(error){
+            console.log(error);
+        }
+        else{
+            cb(results)
+        }
+    })
+}

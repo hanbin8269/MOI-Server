@@ -93,7 +93,7 @@ router.post('/', async(req, res) =>{
 
 router.get('/', async(req,res)=>{ // get project
     var project_result = await new Promise((resolve, reject)=>{
-        model.projectDAO.getProjectListByTitle(req.query.title, (results)=>{
+        model.projectDAO.getProjectList((results)=>{
             resolve(results);
         })
     })

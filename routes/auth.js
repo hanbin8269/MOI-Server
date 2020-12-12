@@ -36,5 +36,39 @@ router.post('/login', async (req, res) => {
 
 })
 
+router.post('/sign-up', async (req, res) =>{
+    
+    // password hashing
+    const hashedPassword = await new Promise((resolve, reject) => {
+        crypto.pbkdf2(req.body.password, process.env.SECRET_KEY, 100000, 64, 'sha512', (err, key) => {
+            if (err){
+                reject(err);
+            }
+            resolve(key.toString('base64'));
+        })
+    });
+
+    // 유저 생성할 때 데이터
+    var data = {
+        "email" : req.body.email,
+        "password" : hashedPassword
+    }
+
+    // 유저 생성 Promise
+    // 시간 남으면 exists user 예외처리도 만들자
+    var createdUser = await new Promise((resolve, reject)=>{
+        model.createUser(data, (results)=>{
+            resolve(results);
+        }
+        )
+    });
+
+    console.log(createdUser)
+
+    res.status(201)
+    .send({"message" : "sign up success"})
+    .end();
+})
+
 
 module.exports = router;

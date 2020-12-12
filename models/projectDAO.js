@@ -1,5 +1,7 @@
 var connection = require('./db')
 
+
+
 exports.getTechByName = function(tech_name, cb){
     sql = "SELECT * FROM tech where name=?";
     values = [tech_name];
@@ -73,6 +75,44 @@ exports.createProject = function(data, cb){
         }
         else{
             cb(results)
+        }
+    })
+}
+
+exports.createTechProject = function(data, cb){
+    sql = "INSERT INTO project_tech (tech_id, project_id) values( ? , ? );";
+    values = [data.tech_id, data.project_id]
+    connection.query(sql,values,(error, results)=>{
+        if(error){
+            console.log(error);
+        }
+        else{
+            cb(results)
+        }
+    })
+}
+
+exports.getTechByProjectID = function(project_id, cb){
+    sql = "SELECT * FROM project_tech where project_id=?";
+    values = [project_id];
+    connection.query(sql,values,(error, results)=>{
+        if(results[0]===undefined){
+            cb(error)
+        }
+        else if(error){
+            cb(error)
+        }
+        else{
+            console.log(results[0])
+            connection.query("Select * from tech where tech_id = ?",[results[0].tech_id],(error, results)=>{
+                if(error){
+                    cb(error)
+                }
+                else{
+                    
+                    cb(results)
+                }
+            })
         }
     })
 }

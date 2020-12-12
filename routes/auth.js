@@ -5,7 +5,7 @@ var crypto = require('crypto');
 
 router.post('/login', async (req, res) => {
     var resultUser = await new Promise((resolve, reject)=>{
-        model.findUserByEmail(req.body, (results)=>{
+        model.findUserByEmail(req.body.email, (results)=>{
             resolve(results);
         })
     })
@@ -13,6 +13,7 @@ router.post('/login', async (req, res) => {
     if (!resultUser) {
         res.status(400).send({'error' : "doesn't exist user"});
         res.end();
+        return
     }
 
     // password 해싱
@@ -27,7 +28,10 @@ router.post('/login', async (req, res) => {
 
     // password 일치 확인
     if (resultUser.password != hashedPassword){
-        res.status(400).json({'error':"incorrect password"}).end();
+        res.status(400)
+        .send({'error':"incorrect password"})
+        .end();
+        return
     }
     
     res.status(200)

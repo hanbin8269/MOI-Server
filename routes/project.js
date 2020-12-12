@@ -112,27 +112,7 @@ router.get('/', async(req,res)=>{ // list project
         })
     })
 
-    const tech_list = await Promise.all(
-        project_result.map((project) => {
-            return new Promise((resolve, reject)=>{
-                model.projectDAO.getTechByProjectID(project.project_id,(results)=>{
-                    if (!isEmpty(results)){
-                        project['techs'] = results.map((tech)=>{
-                            return tech.name;
-                        })
-                    }else{
-                        project['techs'] = []
-                    }
-                    
-                    resolve(project)
-                })
-            })
-        })
-    )
-
-    project_result['techs'] = tech_list
-    project_result['users'] = tech_list
-
+    
     res.send({"project" : project_result})
     .status(200)
     .end();
@@ -145,16 +125,25 @@ router.get('/:project_id', async(req,res)=>{ // get project
         })
     })
 
-    const tech_list = await new Promise((resolve, reject)=>{
+    const project_tech_list = await new Promise((resolve, reject)=>{
         model.projectDAO.getTechByProjectID(req.params.project_id,(results)=>{
-            var techs = results.map(tech=>{
-                return tech.name
-            })
-            resolve(techs)
+            resolve(results)
         })
     })
+
     
-    project_result[0]['techs'] = tech_list
+    const tech_name_list = await await Promise.all(
+        project_tech_list.map(project_tech=>{
+            return new Promise((resolve, reject)=>{
+                model.projectDAO.getTechByTechID(project_tech.tech_id,(results)=>{
+                    resolve(results[0].name)
+                })
+            })
+        })
+    )
+    
+
+    project_result[0]['techs'] = tech_name_list
 
     res.send({"project" : project_result[0]})
     .status(200)

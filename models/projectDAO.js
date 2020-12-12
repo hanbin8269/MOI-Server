@@ -1,11 +1,24 @@
 var connection = require('./db')
 
-exports.findTechByName = function(tech_name, cb){
+exports.getTechByName = function(tech_name, cb){
     sql = "SELECT * FROM tech where name=?";
     values = [tech_name];
     connection.query(sql,values,(error, results)=>{
         if(error){
             cb(error)
+        }
+        else{
+            cb(results)
+        }
+    })
+}
+
+exports.getProjectListByTitle = function(title, cb){
+    sql = "SELECT * From project where title = ?"
+    values = [title]
+    connection.query(sql,values,(error, results)=>{
+        if(error){
+            console.log(error);
         }
         else{
             cb(results)
